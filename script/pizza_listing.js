@@ -25,14 +25,40 @@ const server = http.createServer(function (req, res) {
       formData += data;
     });
 
-    //// Une fois toutes les données reçues
+    // Une fois toutes les données reçues
 
-    req.on("end", function () {
+    req.on("end", function ()
+    {
+
       const bestellt = querystring.decode(formData);
       console.log(bestellt);
-      res.write("<h1>Bestellseite</h1>");
-      // Utiliser la variable bestellt pour afficher la commande
 
+      const bestellungen =  fs
+        .readFileSync("script/bestellungen.html")
+        .toString();
+      res.write(bestellungen)
+
+      const pizza = bestellt.bestellung;
+      const adresse = bestellt.adresse;
+      const datum = new Date().toLocaleDateString();
+      
+      const jsonString = JSON.stringify([
+        ...existierende_bestellungen, //um die alte werte zu nehmen
+
+        {
+
+        bestellung: pizza,
+        adresse,
+       datum
+      }
+      ]);
+
+      fs.writeFileSync("script/bestellungen.json", jsonString);
+      const Bestell = fs.writeFileSync("script/bestellungen.html").toString();
+      res.write(Bestell({orders:existierende_bestellungen}));
+      // orders[{
+      //   
+      // }]
       res.write(`Danke für die Bestellung: ${bestellt.bestellung}`);
       res.end();
     }); //
