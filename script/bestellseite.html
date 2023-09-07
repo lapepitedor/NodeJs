@@ -2,8 +2,7 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8" />
-
+    <meta charset="UTF-8">
     <title>Pizzaseite</title>
     <style type="text/css">
         body {
@@ -21,17 +20,9 @@
 </head>
 
 <body>
-    <h1>Willkommen auf unserer Pizzeria-Seite</h1>
-    Aktuelle Angebote: <br />-----<br />
-    <p><a href="/gibtsnicht">Fehlerseite</a></p>
-
-
-
-
     <form action="/bestellung" method="post" style="margin-top: 20px; padding: 1em; border: 1px solid black">
         <select name="bestellung" id="pizzaSelect">
-            <option value="Pizza Margherita">Pizza Margherita, 8 EUR
-
+            <!-- Remarque : Vous devrez ajouter dynamiquement les options avec JavaScript ou côté serveur -->
         </select>
         <input placeholder="Adresse..." type="text" name="adresse">
         <p>
@@ -39,7 +30,7 @@
         </p>
     </form>
 
-
+    
 </body>
 
 </html>

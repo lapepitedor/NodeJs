@@ -26,3 +26,5 @@ const weatherServer = http.createServer((req, resp) => {
 weatherServer.listen(4500, () => {
   console.log("Server is listening on port 4500");
 });
+// Refresh document every 30 second
+//<head><meta hhtp-equiv= "refresh" content="30"></head>

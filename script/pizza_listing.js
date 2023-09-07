@@ -1,20 +1,24 @@
 import http from "node:http";
 import querystring from "node:querystring";
-import fs from "node:fs";
+import fs from "node:fs";// pour importer le module fs, puis nous utilisons fs.readFile pour lire le contenu d'un fichier
 import pug from "pug";
 
 const pizzaOffers = [
   { name: "Ananas Dave", cost: 12 },
   { name: "Mango Pizza", cost: 112 },
+  { name: "Pizza Margherita", cost: 8 },
+  { name: "Pizza Pepperoni", cost: 10 },
+  { name: "Pizza Vegetariana", cost: 9 },
 ];
 
 const server = http.createServer(function (req, res) {
   res.setHeader("Content-Type", "text/html; charset=utf-8");
+  // Traiter la soumission du formulaire lors de la requête bestellung
 
   if (req.url === "/bestellung") {
-    // Traiter la soumission du formulaire lors de la requête bestellung
 
-    let formData = ""; // Créer une variable pour stocker les données du formulaire
+    // Créer une variable pour stocker les données du formulaire
+    let formData = "";
 
     req.on("data", function (data) {
       // Écouter les données du formulaire entrantes
@@ -25,6 +29,7 @@ const server = http.createServer(function (req, res) {
 
     req.on("end", function () {
       const bestellt = querystring.decode(formData);
+      console.log(bestellt);
       res.write("<h1>Bestellseite</h1>");
       // Utiliser la variable bestellt pour afficher la commande
 
@@ -32,18 +37,25 @@ const server = http.createServer(function (req, res) {
       res.end();
     }); //
   } else if (req.url === "/") {
-      const compiledFunction = pug.compileFile("script/startseite.pug");
-      res.write(compiledFunction({ pizzaOffers }));
-      /*
-    //start seite
-    // let pizzaString = "";
-    // pizzaOffers.forEach((pizza) => {
-    //   pizzaString += `${pizza.name}, ${pizza.cost} EUR <br/>`;
-    // });
+    
+    console.log(pizzaOffers);
+    // Remplacer la balise spécifique dans le HTML par les options générées
+    const pizzaOptions = pizzaOffers
+      .map(
+        (pizza) =>
+          `<option value="${pizza.name}">${pizza.name}, ${pizza.cost} EUR</option>`
+      )
+      .join(""); // Convertir le tableau en une chaîne
 
-    // const datei = fs.readFileSync("script/startseite.html").toString();
+    const datei = fs.readFileSync("script/startseite.html").toString();
 
-    // res.write(datei.replace("PIZZA AUFLISTUNG HIER", pizzaString)); */
+    
+    const modifiedHtmlContent = datei.replace(
+     
+      "Pizza Margherita, 8 EUR",
+      pizzaOptions
+    );
+    res.write(modifiedHtmlContent);
 
     res.end();
   } else {
